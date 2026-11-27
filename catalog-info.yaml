@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demoncartel-backstage
+  title: demoncartel Backstage
+  description: Shared local Backstage instance for demoncartel (config, GitHub discovery, TechDocs).
+  annotations:
+    github.com/project-slug: demoncartel/backstage
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - backstage
+    - platform
+spec:
+  type: website
+  lifecycle: experimental
+  owner: group:guests # placeholder until a real owning team exists

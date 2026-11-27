@@ -1,0 +1,21 @@
+# Local Postgres for Backstage. Start with: docker compose up -d
+# Credentials are for local development only; override them in .env.
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-backstage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-backstage}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - backstage-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-backstage}']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  backstage-pgdata:
