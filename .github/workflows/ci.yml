@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      # Yarn 4 is pinned via packageManager / .yarn/releases; corepack provides it.
+      - run: corepack enable
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install dependencies
+        id: install
+        run: yarn install --immutable
+
+      # Each check below runs even if an earlier one fails, so one run reports
+      # every problem. They are skipped only if the install itself failed.
+
+      - name: Validate catalog entities and templates
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn validate:catalog
+
+      - name: Validate app config
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn config:check
+
+      - name: Type check
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn tsc
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn lint:all
+
+      - name: Check formatting
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn prettier:check
+
+      - name: Unit tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn test:all
+        env:
+          CI: true
+
+      - name: Build backend
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn build:backend
