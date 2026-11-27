@@ -1,0 +1,6 @@
+# Zero-dependency overlay: in-memory SQLite instead of Postgres.
+# Data is lost on every restart. Used by `yarn start:sqlite`.
+backend:
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
