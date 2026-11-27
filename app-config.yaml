@@ -173,6 +173,21 @@ auth:
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+    # GitHub sign-in through the demoncartel GitHub OAuth App (see README.md).
+    # Set AUTH_GITHUB_CLIENT_ID and AUTH_GITHUB_CLIENT_SECRET in .env, never
+    # commit them. If they are not set, this provider is skipped with a warning
+    # and guest sign-in keeps working.
+    # See https://backstage.io/docs/auth/github/provider
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # Signs you in as the catalog User whose name is your GitHub
+            # login. Those Users come from catalog.providers.githubOrg below,
+            # so only members of the demoncartel org can sign in this way.
+            - resolver: usernameMatchingUserEntityName
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
   clientIdMetadataDocuments:
@@ -210,6 +225,18 @@ catalog:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
           initialDelay: { seconds: 15 }
+    # Imports demoncartel's members and teams as User and Group entities, so
+    # GitHub sign-in can find you. Uses the same GITHUB_TOKEN, which for this
+    # needs the org permission "Members: Read" (see README.md).
+    # See https://backstage.io/docs/integrations/github/org
+    githubOrg:
+      id: demoncartel
+      githubUrl: https://github.com
+      orgs: ['demoncartel']
+      schedule:
+        frequency: { minutes: 60 }
+        timeout: { minutes: 15 }
+        initialDelay: { seconds: 15 }
   locations:
     # Local org data (guest user/group for local dev).
     - type: file
