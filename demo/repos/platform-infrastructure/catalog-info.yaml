@@ -1,0 +1,75 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: platform-infrastructure
+  title: "Platform infrastructure"
+  description: "Terraform for Acme Bank's cloud accounts, databases and event bus."
+  annotations:
+    github.com/project-slug: __ORG__/platform-infrastructure
+    backstage.io/techdocs-ref: dir:.
+  tags: [terraform]
+spec:
+  type: library
+  lifecycle: production
+  owner: group:team-platform
+  system: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ledger-db
+  title: "Ledger database"
+  description: "PostgreSQL with point-in-time recovery and 7-year retention."
+  tags: [postgres, sox]
+spec:
+  type: database
+  owner: group:team-accounts
+  system: accounts
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: accounts-db
+  title: "Accounts database"
+  description: "PostgreSQL holding account and customer records."
+  tags: [postgres, pii]
+spec:
+  type: database
+  owner: group:team-accounts
+  system: accounts
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: payments-db
+  title: "Payments database"
+  description: "PostgreSQL holding payment instructions and status."
+  tags: [postgres, pii]
+spec:
+  type: database
+  owner: group:team-payments
+  system: payments
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: card-vault
+  title: "Card vault"
+  description: "Tokenisation vault, the only store of full card numbers."
+  tags: [pci]
+spec:
+  type: vault
+  owner: group:team-payments
+  system: payments
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: event-bus
+  title: "Event bus"
+  description: "Kafka cluster carrying payment, ledger and notification events."
+  tags: [kafka]
+spec:
+  type: message-queue
+  owner: group:team-platform
+  system: platform

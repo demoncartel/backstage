@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: api-gateway
+  title: "API gateway"
+  description: "Public entry point. Authenticates customers and routes to internal APIs."
+  annotations:
+    github.com/project-slug: __ORG__/api-gateway
+  tags: [envoy]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-platform
+  system: platform
+  consumesApis: [onboarding-api, accounts-api, payments-api, cards-api]

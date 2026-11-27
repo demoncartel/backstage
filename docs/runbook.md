@@ -124,7 +124,7 @@ Two ways to supply it:
    ```
 2. In the startup log, look for:
    - `Configuring auth provider: github` with no `Skipping github auth provider` warning after it.
-   - `Read N GitHub repositories` from `github-provider:demoncartel`.
+   - `Read N GitHub repositories` from `github-provider:org`.
    - `Reading GitHub users and teams for org: demoncartel` with no `refresh failed` after it.
 3. Open http://localhost:3000. The sign-in page shows **GitHub** and **Guest**. Sign in with GitHub
    and check that your profile shows your GitHub login.

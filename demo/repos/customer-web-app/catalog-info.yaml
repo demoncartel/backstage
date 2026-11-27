@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: customer-web-app
+  title: "Customer web app"
+  description: "The Acme Bank web banking app customers sign in to."
+  annotations:
+    github.com/project-slug: __ORG__/customer-web-app
+  tags: [react, pii]
+spec:
+  type: website
+  lifecycle: production
+  owner: group:team-customer
+  system: customer
+  consumesApis: [onboarding-api, accounts-api, payments-api]

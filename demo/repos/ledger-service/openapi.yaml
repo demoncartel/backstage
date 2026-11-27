@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info: { title: Ledger API, version: 3.0.0, description: 'Post balanced journal entries and read account history. (fictional)' }
+paths:
+  /journal-entries:
+    post:
+      summary: Post a balanced journal entry (debits must equal credits)
+      responses: { '201': { description: Posted }, '422': { description: Unbalanced entry } }
+  /accounts/{id}/entries:
+    get:
+      summary: List entries for an account
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: Entries } }

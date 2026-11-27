@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ledger-service
+  title: "Ledger service"
+  description: "Double-entry ledger, the single source of truth for money movements."
+  annotations:
+    github.com/project-slug: __ORG__/ledger-service
+    backstage.io/techdocs-ref: dir:.
+  tags: [go, sox]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-accounts
+  system: accounts
+  providesApis: [ledger-api]
+  dependsOn: [resource:ledger-db, resource:event-bus]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: ledger-api
+  title: "Ledger API"
+  description: "Post balanced journal entries and read account history."
+  tags: [rest, sox]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-accounts
+  system: accounts
+  definition:
+    $text: ./openapi.yaml

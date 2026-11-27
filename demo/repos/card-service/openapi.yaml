@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info: { title: Cards API, version: 1.0.0, description: 'Issue, freeze and replace cards. Never returns full card numbers. (fictional)' }
+paths:
+  /cards:
+    post:
+      summary: Issue a card
+      responses: { '201': { description: Card issued } }
+  /cards/{id}/freeze:
+    post:
+      summary: Freeze a card
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '204': { description: Frozen } }

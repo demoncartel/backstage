@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info: { title: Payments API, version: 1.9.0, description: 'Create and track outgoing payments. (fictional)' }
+paths:
+  /payments:
+    post:
+      summary: Create a payment (idempotent with the Idempotency-Key header)
+      responses: { '202': { description: Accepted }, '409': { description: Duplicate key } }
+  /payments/{id}:
+    get:
+      summary: Get payment status
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: Payment } }

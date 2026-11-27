@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: statements-service
+  title: "Statements service"
+  description: "Generates monthly PDF statements from ledger history."
+  annotations:
+    github.com/project-slug: __ORG__/statements-service
+  tags: [python, pii]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-accounts
+  system: accounts
+  consumesApis: [ledger-api, notifications-api]

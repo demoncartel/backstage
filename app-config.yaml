@@ -1,5 +1,7 @@
 app:
-  title: demoncartel Backstage
+  # Shown in the browser tab and on the sign-in page. Set APP_TITLE in .env
+  # for a demo, e.g. "Acme Bank Developer Portal".
+  title: ${APP_TITLE:-demoncartel Backstage}
   baseUrl: http://localhost:3000
 
   # Enable all packages by default, this will discover packages from packages/app/package.json
@@ -95,7 +97,8 @@ app:
               height: 4
 
 organization:
-  name: demoncartel
+  # Shown in the catalog heading ("<name> Catalog"). Set ORG_DISPLAY_NAME in .env.
+  name: ${ORG_DISPLAY_NAME:-demoncartel}
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -186,7 +189,7 @@ auth:
           resolvers:
             # Signs you in as the catalog User whose name is your GitHub
             # login. Those Users come from catalog.providers.githubOrg below,
-            # so only members of the demoncartel org can sign in this way.
+            # so only members of the GITHUB_ORG org can sign in this way.
             - resolver: usernameMatchingUserEntityName
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
@@ -212,11 +215,12 @@ catalog:
     - allow: [Component, System, API, Group, Resource, Location]
   providers:
     github:
-      # Discovers catalog-info.yaml in every repo of the demoncartel org.
-      # Needs GITHUB_TOKEN; without it this provider logs errors but the rest
-      # of Backstage keeps working.
-      demoncartel:
-        organization: demoncartel
+      # Discovers catalog-info.yaml in every repo of the GitHub org named by
+      # GITHUB_ORG in .env (default: demoncartel). Change the org there, not
+      # here. Needs GITHUB_TOKEN; without it this provider logs errors but the
+      # rest of Backstage keeps working.
+      org:
+        organization: ${GITHUB_ORG:-demoncartel}
         catalogPath: /catalog-info.yaml
         filters:
           branch: main # only look at the main branch
@@ -225,14 +229,14 @@ catalog:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
           initialDelay: { seconds: 15 }
-    # Imports demoncartel's members and teams as User and Group entities, so
+    # Imports the org's members and teams as User and Group entities, so
     # GitHub sign-in can find you. Uses the same GITHUB_TOKEN, which for this
-    # needs the org permission "Members: Read" (see README.md).
+    # needs read:org and read:user (see docs/runbook.md).
     # See https://backstage.io/docs/integrations/github/org
     githubOrg:
-      id: demoncartel
+      id: org
       githubUrl: https://github.com
-      orgs: ['demoncartel']
+      orgs: ['${GITHUB_ORG:-demoncartel}']
       schedule:
         frequency: { minutes: 60 }
         timeout: { minutes: 15 }
@@ -243,6 +247,14 @@ catalog:
       target: ../../catalog/org.yaml
       rules:
         - allow: [User, Group]
+
+    # Software templates (Create → "Create a new service"). The template
+    # creates a repo in the org you pick and registers it in the catalog; the
+    # GitHub token needs repo write access for that.
+    - type: file
+      target: ../../templates/new-service/template.yaml
+      rules:
+        - allow: [Template]
 
     # Static fallback for bad-app-sample, in case GitHub discovery is off or
     # has not run yet. Normally NOT needed: once

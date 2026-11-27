@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: accounts-service
+  title: "Accounts service"
+  description: "Current accounts, balances and account holders."
+  annotations:
+    github.com/project-slug: __ORG__/accounts-service
+  tags: [java, pii, sox]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-accounts
+  system: accounts
+  providesApis: [accounts-api]
+  consumesApis: [ledger-api]
+  dependsOn: [resource:accounts-db]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: accounts-api
+  title: "Accounts API"
+  description: "Read accounts and balances; open and close accounts."
+  tags: [rest, pii]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-accounts
+  system: accounts
+  definition:
+    $text: ./openapi.yaml

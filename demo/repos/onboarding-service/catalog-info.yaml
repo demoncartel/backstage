@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: onboarding-service
+  title: "Onboarding service"
+  description: "Opens new customer accounts and runs KYC (identity and AML checks)."
+  annotations:
+    github.com/project-slug: __ORG__/onboarding-service
+    backstage.io/techdocs-ref: dir:.
+  tags: [kotlin, pii, kyc]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-customer
+  system: customer
+  providesApis: [onboarding-api]
+  consumesApis: [accounts-api, notifications-api]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: onboarding-api
+  title: "Onboarding API"
+  description: "Start and track a customer application."
+  tags: [rest, pii]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-customer
+  system: customer
+  definition:
+    $text: ./openapi.yaml

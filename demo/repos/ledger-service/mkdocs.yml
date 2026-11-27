@@ -1,0 +1,6 @@
+site_name: Ledger service
+nav:
+  - Overview: index.md
+  - Runbook: runbook.md
+plugins:
+  - techdocs-core

@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info: { title: Fraud API, version: 1.2.0, description: 'Returns allow, review or block for a transaction. (fictional)' }
+paths:
+  /decisions:
+    post:
+      summary: Score a transaction; returns allow, review or block
+      responses: { '200': { description: Decision } }

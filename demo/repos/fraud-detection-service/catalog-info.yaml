@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: fraud-detection-service
+  title: "Fraud detection service"
+  description: "Scores payments and card transactions for fraud in real time."
+  annotations:
+    github.com/project-slug: __ORG__/fraud-detection-service
+  tags: [python, ml, pci]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  providesApis: [fraud-api]
+  dependsOn: [resource:event-bus]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: fraud-api
+  title: "Fraud API"
+  description: "Returns allow, review or block for a transaction."
+  tags: [rest]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  definition:
+    $text: ./openapi.yaml
