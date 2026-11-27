@@ -1,0 +1,9 @@
+site_name: ${{ values.name }}
+nav:
+  - Overview: index.md
+  - Architecture: architecture.md
+  - Design decisions: decisions.md
+  - API, inputs and outputs: api.md
+  - Operations and failure modes: operations.md
+plugins:
+  - techdocs-core

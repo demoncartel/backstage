@@ -1,3 +1,5 @@
+# Scaffolder skeletons: nunjucks-templated, and the .NET one holds generated files (OpenAPI, NuGet lock files)
+templates/dotnet-service/skeleton
 dist
 dist-types
 coverage
