@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info: { title: Onboarding API, version: 1.4.0, description: 'Start and track a customer application. (fictional)' }
+paths:
+  /applications:
+    post:
+      summary: Start an application
+      responses: { '201': { description: Created } }
+  /applications/{id}:
+    get:
+      summary: Get application status (pending, kyc_review, approved, rejected)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: Application } }

@@ -78,12 +78,20 @@ If GitHub sign-in says your user was not found, the org import hasn't run or you
 The org import also reads members' emails: with a classic token or the GitHub CLI login that needs the
 `read:user` (or `user:email`) scope. See [docs/runbook.md](docs/runbook.md) for running and troubleshooting.
 
+## Acme Bank demo and the org setting
+
+Which org Backstage reads is set by `GITHUB_ORG` in `.env` (default `demoncartel`), and the portal's
+name by `APP_TITLE` and `ORG_DISPLAY_NAME`. `demo/` holds a fictional digital bank, **Acme Bank**:
+twelve repos with services, APIs, resources, systems and TechDocs, plus a script that creates them in
+any org. `templates/new-service` is a **Create a new service** template. See
+[demo/README.md](demo/README.md) for setup and a five-minute demo script.
+
 ## How discovery works
 
-`app-config.yaml` → `catalog.providers.github.demoncartel` uses
+`app-config.yaml` → `catalog.providers.github.org` uses
 `@backstage/plugin-catalog-backend-module-github` (registered in `packages/backend/src/index.ts`).
 It queries GitHub for files named `catalog-info.yaml` at the root of every repo (branch `main`) in the
-`demoncartel` org and registers whatever it finds. Change `schedule`, `filters.repository` (a regex) or
+`GITHUB_ORG` org (default `demoncartel`) and registers whatever it finds. Change `schedule`, `filters.repository` (a regex) or
 `catalogPath` there. Entities that are removed from GitHub are removed from the catalog on the next run.
 
 Local entities (the `guest` user and `guests` group) live in `catalog/org.yaml`.

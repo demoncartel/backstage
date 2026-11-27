@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: notification-service
+  title: "Notification service"
+  description: "Sends push, email and SMS messages to customers."
+  annotations:
+    github.com/project-slug: __ORG__/notification-service
+  tags: [node, pii]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-platform
+  system: platform
+  providesApis: [notifications-api]
+  dependsOn: [resource:event-bus]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: notifications-api
+  title: "Notifications API"
+  description: "Send a templated message to a customer."
+  tags: [rest]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-platform
+  system: platform
+  definition:
+    $text: ./openapi.yaml

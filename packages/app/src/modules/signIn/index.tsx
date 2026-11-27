@@ -5,7 +5,7 @@ import {
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 
 /**
- * Sign-in page offering GitHub (for demoncartel org members) and Guest.
+ * Sign-in page offering GitHub (for members of the configured org) and Guest.
  * Replaces the default guest-only page. GitHub sign-in needs the OAuth App
  * credentials in .env and the org import to have run (see README.md).
  */
@@ -20,7 +20,7 @@ const signInPage = SignInPageBlueprint.make({
             {
               id: 'github-auth-provider',
               title: 'GitHub',
-              message: 'Sign in with your demoncartel GitHub account',
+              message: 'Sign in with your GitHub account (organization members)',
               apiRef: githubAuthApiRef,
             },
             'guest',

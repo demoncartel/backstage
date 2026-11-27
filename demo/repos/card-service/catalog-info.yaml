@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: card-service
+  title: "Card service"
+  description: "Issues debit cards and authorises card transactions. In PCI DSS scope."
+  annotations:
+    github.com/project-slug: __ORG__/card-service
+  tags: [java, pci, pii]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  providesApis: [cards-api]
+  consumesApis: [accounts-api, ledger-api, fraud-api]
+  dependsOn: [resource:card-vault]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: cards-api
+  title: "Cards API"
+  description: "Issue, freeze and replace cards. Never returns full card numbers."
+  tags: [rest, pci]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  definition:
+    $text: ./openapi.yaml

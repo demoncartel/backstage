@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info: { title: Accounts API, version: 2.1.0, description: 'Read accounts and balances; open and close accounts. (fictional)' }
+paths:
+  /accounts/{id}:
+    get:
+      summary: Get an account
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: Account } }
+  /accounts/{id}/balance:
+    get:
+      summary: Get the available and ledger balance
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: Balance } }

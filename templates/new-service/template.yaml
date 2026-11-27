@@ -1,0 +1,96 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: new-service
+  title: Create a new service
+  description: >-
+    A Node.js service with a health check, CI, TechDocs and a catalog entry,
+    in a new GitHub repository that is registered in the portal.
+  tags: [recommended, nodejs, service]
+spec:
+  owner: group:team-platform
+  type: service
+
+  parameters:
+    - title: About the service
+      required: [name, description, owner, system]
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Lowercase letters, numbers and hyphens, e.g. interest-service.
+          pattern: '^[a-z][a-z0-9-]{2,40}$'
+          ui:autofocus: true
+        description:
+          title: Description
+          type: string
+          description: One sentence on what it does.
+        owner:
+          title: Owning team
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        system:
+          title: System
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: System
+        dataClassification:
+          title: Sensitive data
+          type: string
+          description: Adds a tag so compliance can find every service that handles this data.
+          default: none
+          enum: [none, pii, pci]
+          enumNames: ['None', 'Personal data (PII)', 'Card data (PCI DSS scope)']
+
+    - title: Repository
+      required: [repoUrl]
+      properties:
+        repoUrl:
+          title: Repository location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts: [github.com]
+
+  steps:
+    - id: fetch
+      name: Create files from the skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          dataClassification: ${{ parameters.dataClassification }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+
+    - id: publish
+      name: Create the GitHub repository
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        description: ${{ parameters.description }}
+        defaultBranch: main
+        repoVisibility: private
+
+    - id: register
+      name: Register in the catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in the catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

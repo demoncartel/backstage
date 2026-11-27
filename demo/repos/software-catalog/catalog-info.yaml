@@ -1,0 +1,55 @@
+# Acme Bank's systems. Components in other repos join one with spec.system.
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: customer
+  title: "Customer Experience"
+  description: "How customers find, join and use Acme Bank: web app, onboarding and KYC."
+  tags: [pii]
+spec:
+  owner: group:team-customer
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: accounts
+  title: "Accounts & Ledger"
+  description: "Current accounts, balances, the double-entry ledger and statements."
+  tags: [pii, sox]
+spec:
+  owner: group:team-accounts
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: payments
+  title: "Payments & Cards"
+  description: "Card issuing, outgoing payments and real-time fraud checks."
+  tags: [pci, pii]
+spec:
+  owner: group:team-payments
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: platform
+  title: "Platform"
+  description: "Shared infrastructure, the API gateway and notifications."
+  tags: []
+spec:
+  owner: group:team-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: software-catalog
+  title: "Software catalog"
+  description: "Defines Acme Bank's systems for the developer portal."
+  annotations:
+    github.com/project-slug: __ORG__/software-catalog
+  tags: [catalog]
+spec:
+  type: documentation
+  lifecycle: production
+  owner: group:team-platform
+  system: platform

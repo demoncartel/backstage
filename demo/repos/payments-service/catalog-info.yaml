@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: payments-service
+  title: "Payments service"
+  description: "Sends outgoing payments (Faster Payments, SEPA) and books them to the ledger."
+  annotations:
+    github.com/project-slug: __ORG__/payments-service
+    backstage.io/techdocs-ref: dir:.
+  tags: [java, pii]
+spec:
+  type: service
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  providesApis: [payments-api]
+  consumesApis: [accounts-api, ledger-api, fraud-api, notifications-api]
+  dependsOn: [resource:payments-db, resource:event-bus]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: payments-api
+  title: "Payments API"
+  description: "Create and track outgoing payments."
+  tags: [rest, pii]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:team-payments
+  system: payments
+  definition:
+    $text: ./openapi.yaml
