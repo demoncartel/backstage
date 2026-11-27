@@ -10,8 +10,9 @@ What's configured:
 | Catalog discovery | GitHub provider scans every repo in `demoncartel` for `/catalog-info.yaml` on `main`, every 30 min |
 | Database | Postgres 16 via `docker-compose.yml` (default), or in-memory SQLite for zero-dependency runs |
 | TechDocs | `builder: local`, `generator.runIn: docker`, `publisher: local` |
-| Auth | Guest auth (local development only) |
-| Catalog kinds | Component, System, API, Group, Resource, Location (User/Group from local files) |
+| Auth | GitHub sign-in for demoncartel members, plus guest (local development only) |
+| Org data | GitHub org members and teams imported as Users/Groups, every 60 min |
+| Catalog kinds | Component, System, API, Group, Resource, Location (User/Group from the GitHub org import and local files) |
 
 ## Prerequisites
 
@@ -45,15 +46,37 @@ This layers `app-config.sqlite.yaml` on top of the base config and uses an in-me
 database. Everything is lost when you stop it, and TechDocs won't build without Docker
 (or `techdocs.generator.runIn: local` plus `pip install mkdocs-techdocs-core`).
 
-Without `GITHUB_TOKEN`, Backstage still starts; the GitHub discovery provider just logs
+Without `GITHUB_TOKEN` (the line commented out, not left empty), Backstage still starts; the GitHub discovery provider just logs
 warnings and finds nothing.
 
 ## Create a GitHub token
 
 1. GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** → *Generate new token*.
 2. **Resource owner:** `demoncartel` (an org admin may need to approve it). **Repository access:** all repositories.
-3. **Repository permissions** (all read-only): *Contents: Read* and *Metadata: Read*. Nothing else.
+3. **Repository permissions** (all read-only): *Contents: Read* and *Metadata: Read*.
+   **Organization permissions** (read-only): *Members: Read*, for the org import that GitHub sign-in uses. Nothing else.
 4. Put the token in `.env` as `GITHUB_TOKEN=...`. Each person uses their own token.
+
+## GitHub sign-in
+
+The sign-in page offers **GitHub** and **Guest**. GitHub sign-in uses an OAuth App owned by the org and
+signs you in as the catalog User whose name matches your GitHub login. Those Users are imported from the
+org by `catalog.providers.githubOrg`, so only demoncartel members can sign in with GitHub.
+
+One-time setup (an org admin creates the app once and shares its ID and secret privately):
+
+1. GitHub → **demoncartel** org → Settings → Developer settings → **OAuth Apps** → *New OAuth App*.
+2. **Homepage URL:** `http://localhost:3000`. **Authorization callback URL:**
+   `http://localhost:7007/api/auth/github/handler/frame`.
+3. Generate a client secret, then put both values in your `.env` as `AUTH_GITHUB_CLIENT_ID=...` and
+   `AUTH_GITHUB_CLIENT_SECRET=...`. Never commit them.
+4. Make sure your `GITHUB_TOKEN` has *Members: Read* (see above), restart, and wait for the first org
+   import (about 15 seconds after startup). Then choose **GitHub** on the sign-in page.
+
+If the OAuth variables are not set, the GitHub provider is skipped with a warning and Guest still works.
+If GitHub sign-in says your user was not found, the org import hasn't run or your token lacks *Members: Read*.
+The org import also reads members' emails: with a classic token or the GitHub CLI login that needs the
+`read:user` (or `user:email`) scope. See [docs/runbook.md](docs/runbook.md) for running and troubleshooting.
 
 ## How discovery works
 
@@ -113,11 +136,16 @@ Docs are built on demand when you open them in the UI, using the `spotify/techdo
 
 ## Next steps
 
-- **GitHub sign-in** instead of guest auth: create a GitHub OAuth App, add the `github` provider under
+- **Turn off guest sign-in** once everyone uses GitHub: remove `guest` from `auth.providers` and from
+  `packages/app/src/modules/signIn`, then enable permissions with a real policy.
+- ~~**GitHub sign-in**~~ (done, see above): create a GitHub OAuth App, add the `github` provider under
   `auth.providers` with a sign-in resolver and register `@backstage/plugin-auth-backend-module-github-provider`
   ([docs](https://backstage.io/docs/auth/github/provider)). The package is already a dependency.
-- **GitHub org data:** add `@backstage/plugin-catalog-backend-module-github-org` to import teams and members as Groups/Users
+- ~~**GitHub org data:**~~ (done) add `@backstage/plugin-catalog-backend-module-github-org` to import teams and members as Groups/Users
   (needs a token with org member read access).
 - **Deploy** to Azure Container Apps: use `yarn build-image` and `app-config.production.yaml`, with managed Postgres and
-  secrets for `GITHUB_TOKEN` / `POSTGRES_*`. Enable permissions and real auth first.
+  secrets for `GITHUB_TOKEN` / `POSTGRES_*` / `AUTH_GITHUB_CLIENT_ID` / `AUTH_GITHUB_CLIENT_SECRET` (an OAuth App
+  whose callback URL uses the deployed backend URL). Outside development the backend refuses to start if the
+  GitHub sign-in variables are missing, and the guest provider must be removed from `app-config.production.yaml`.
+  Enable permissions first.
 - Replace the guest group owner (`group:guests`) with real teams once they exist in the catalog.

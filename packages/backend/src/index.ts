@@ -28,6 +28,9 @@ backend.add(import('@backstage/plugin-auth-backend'));
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
 backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
 // See https://backstage.io/docs/auth/guest/provider
+// GitHub sign-in, configured under auth.providers.github in app-config.yaml.
+// See https://backstage.io/docs/auth/github/provider
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
@@ -39,6 +42,11 @@ backend.add(
 // configured under catalog.providers.github in app-config.yaml.
 // See https://backstage.io/docs/integrations/github/discovery
 backend.add(import('@backstage/plugin-catalog-backend-module-github'));
+
+// GitHub org data: imports the members and teams of the org(s) configured
+// under catalog.providers.githubOrg as User and Group entities, so GitHub
+// sign-in can match a login to a User. See https://backstage.io/docs/integrations/github/org
+backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));

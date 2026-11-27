@@ -2688,6 +2688,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-catalog-backend-module-github-org@npm:^0.3.28":
+  version: 0.3.28
+  resolution: "@backstage/plugin-catalog-backend-module-github-org@npm:0.3.28"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.12.0"
+    "@backstage/config": "npm:^1.3.11"
+    "@backstage/plugin-catalog-backend-module-github": "npm:^0.14.2"
+    "@backstage/plugin-catalog-node": "npm:^3.0.0"
+    "@backstage/plugin-events-node": "npm:^0.5.0"
+  checksum: 10c0/f44eaf8ee8c41f8e3d62a7cb50c07bf2a700ac75ed9c77b3081f1871d9ee78fe79af13ef7787d47ba07b886859d4eee9c14ffdebcb2bc7838100a55643991a99
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-catalog-backend-module-github@npm:^0.14.2":
   version: 0.14.2
   resolution: "@backstage/plugin-catalog-backend-module-github@npm:0.14.2"
@@ -13289,6 +13302,7 @@ __metadata:
     "@backstage/plugin-auth-node": "npm:^0.7.8"
     "@backstage/plugin-catalog-backend": "npm:^4.0.3"
     "@backstage/plugin-catalog-backend-module-github": "npm:^0.14.2"
+    "@backstage/plugin-catalog-backend-module-github-org": "npm:^0.3.28"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.28"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.26"
     "@backstage/plugin-kubernetes-backend": "npm:^0.21.13"

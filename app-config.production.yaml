@@ -29,6 +29,10 @@ backend:
       #     $file: <file-path>/ca/server.crt
 
 auth:
+  # GitHub sign-in is inherited from app-config.yaml. In production
+  # (NODE_ENV=production) AUTH_GITHUB_CLIENT_ID and AUTH_GITHUB_CLIENT_SECRET
+  # must be set, or the backend fails to start. The guest provider below also
+  # fails outside development; remove it before deploying (see README.md).
   providers:
     guest: {}
 
