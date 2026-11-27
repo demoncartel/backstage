@@ -20,7 +20,8 @@ const signInPage = SignInPageBlueprint.make({
             {
               id: 'github-auth-provider',
               title: 'GitHub',
-              message: 'Sign in with your GitHub account (organization members)',
+              message:
+                'Sign in with your GitHub account (organization members)',
               apiRef: githubAuthApiRef,
             },
             'guest',

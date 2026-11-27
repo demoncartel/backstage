@@ -5,21 +5,21 @@ Shared local [Backstage](https://backstage.io) instance (v1.57, new backend syst
 
 What's configured:
 
-| Area | Setup |
-| --- | --- |
-| Catalog discovery | GitHub provider scans every repo in `demoncartel` for `/catalog-info.yaml` on `main`, every 30 min |
-| Database | Postgres 16 via `docker-compose.yml` (default), or in-memory SQLite for zero-dependency runs |
-| TechDocs | `builder: local`, `generator.runIn: docker`, `publisher: local` |
-| Auth | GitHub sign-in for demoncartel members, plus guest (local development only) |
-| Org data | GitHub org members and teams imported as Users/Groups, every 60 min |
-| Catalog kinds | Component, System, API, Group, Resource, Location (User/Group from the GitHub org import and local files) |
+| Area              | Setup                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------- |
+| Catalog discovery | GitHub provider scans every repo in `demoncartel` for `/catalog-info.yaml` on `main`, every 30 min        |
+| Database          | Postgres 16 via `docker-compose.yml` (default), or in-memory SQLite for zero-dependency runs              |
+| TechDocs          | `builder: local`, `generator.runIn: docker`, `publisher: local`                                           |
+| Auth              | GitHub sign-in for demoncartel members, plus guest (local development only)                               |
+| Org data          | GitHub org members and teams imported as Users/Groups, every 60 min                                       |
+| Catalog kinds     | Component, System, API, Group, Resource, Location (User/Group from the GitHub org import and local files) |
 
 ## Prerequisites
 
 - **Node.js 24** (this Backstage version requires `^24.15.0 || ^26.13.0`, see `engines` in `package.json`)
 - **Yarn 4** via Corepack: `corepack enable` (the repo pins Yarn in `.yarn/releases`)
 - **Git**
-- **Docker**, for the local Postgres container *and* for building TechDocs
+- **Docker**, for the local Postgres container _and_ for building TechDocs
 - A GitHub token (see below) so discovery can read the org
 
 ## Quick start
@@ -51,10 +51,10 @@ warnings and finds nothing.
 
 ## Create a GitHub token
 
-1. GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** → *Generate new token*.
+1. GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** → _Generate new token_.
 2. **Resource owner:** `demoncartel` (an org admin may need to approve it). **Repository access:** all repositories.
-3. **Repository permissions** (all read-only): *Contents: Read* and *Metadata: Read*.
-   **Organization permissions** (read-only): *Members: Read*, for the org import that GitHub sign-in uses. Nothing else.
+3. **Repository permissions** (all read-only): _Contents: Read_ and _Metadata: Read_.
+   **Organization permissions** (read-only): _Members: Read_, for the org import that GitHub sign-in uses. Nothing else.
 4. Put the token in `.env` as `GITHUB_TOKEN=...`. Each person uses their own token.
 
 ## GitHub sign-in
@@ -65,16 +65,16 @@ org by `catalog.providers.githubOrg`, so only demoncartel members can sign in wi
 
 One-time setup (an org admin creates the app once and shares its ID and secret privately):
 
-1. GitHub → **demoncartel** org → Settings → Developer settings → **OAuth Apps** → *New OAuth App*.
+1. GitHub → **demoncartel** org → Settings → Developer settings → **OAuth Apps** → _New OAuth App_.
 2. **Homepage URL:** `http://localhost:3000`. **Authorization callback URL:**
    `http://localhost:7007/api/auth/github/handler/frame`.
 3. Generate a client secret, then put both values in your `.env` as `AUTH_GITHUB_CLIENT_ID=...` and
    `AUTH_GITHUB_CLIENT_SECRET=...`. Never commit them.
-4. Make sure your `GITHUB_TOKEN` has *Members: Read* (see above), restart, and wait for the first org
+4. Make sure your `GITHUB_TOKEN` has _Members: Read_ (see above), restart, and wait for the first org
    import (about 15 seconds after startup). Then choose **GitHub** on the sign-in page.
 
 If the OAuth variables are not set, the GitHub provider is skipped with a warning and Guest still works.
-If GitHub sign-in says your user was not found, the org import hasn't run or your token lacks *Members: Read*.
+If GitHub sign-in says your user was not found, the org import hasn't run or your token lacks _Members: Read_.
 The org import also reads members' emails: with a classic token or the GitHub CLI login that needs the
 `read:user` (or `user:email`) scope. See [docs/runbook.md](docs/runbook.md) for running and troubleshooting.
 
@@ -133,14 +133,14 @@ Docs are built on demand when you open them in the UI, using the `spotify/techdo
 
 ## Useful commands
 
-| Command | What it does |
-| --- | --- |
-| `yarn start` | Run frontend + backend (Postgres) |
-| `yarn start:sqlite` | Run with in-memory SQLite |
-| `yarn tsc` | Type-check |
-| `yarn build:backend` | Build the backend bundle |
-| `yarn build-image` | Build the backend Docker image (production config) |
-| `docker compose down -v` | Stop Postgres and delete its data |
+| Command                  | What it does                                       |
+| ------------------------ | -------------------------------------------------- |
+| `yarn start`             | Run frontend + backend (Postgres)                  |
+| `yarn start:sqlite`      | Run with in-memory SQLite                          |
+| `yarn tsc`               | Type-check                                         |
+| `yarn build:backend`     | Build the backend bundle                           |
+| `yarn build-image`       | Build the backend Docker image (production config) |
+| `docker compose down -v` | Stop Postgres and delete its data                  |
 
 ## Next steps
 

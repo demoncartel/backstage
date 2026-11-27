@@ -5,24 +5,24 @@ bank with four teams, four systems, twelve repositories, seven APIs and five inf
 resources. Services are tagged `pii`, `pci` and `sox`, so you can show compliance views such as
 "everything in PCI DSS scope" in one click.
 
-| System | Owner | Repositories |
-| --- | --- | --- |
-| Customer Experience | team-customer | customer-web-app, onboarding-service |
-| Accounts & Ledger | team-accounts | accounts-service, ledger-service, statements-service |
-| Payments & Cards | team-payments | payments-service, fraud-detection-service, card-service |
-| Platform | team-platform | api-gateway, notification-service, platform-infrastructure, software-catalog |
+| System              | Owner         | Repositories                                                                 |
+| ------------------- | ------------- | ---------------------------------------------------------------------------- |
+| Customer Experience | team-customer | customer-web-app, onboarding-service                                         |
+| Accounts & Ledger   | team-accounts | accounts-service, ledger-service, statements-service                         |
+| Payments & Cards    | team-payments | payments-service, fraud-detection-service, card-service                      |
+| Platform            | team-platform | api-gateway, notification-service, platform-infrastructure, software-catalog |
 
 `platform-infrastructure` also defines the Resources (`ledger-db`, `accounts-db`, `payments-db`,
 `card-vault`, `event-bus`), and `software-catalog` defines the Systems.
 
 ## What's here
 
-| Path | What it is |
-| --- | --- |
-| `demo/repos/<name>/` | The files pushed to each demo repo: `catalog-info.yaml`, `README.md`, and for some an `openapi.yaml` or TechDocs (`mkdocs.yml`, `docs/`). `__ORG__` is replaced with the org name when seeding. |
-| `demo/generate-repos.mjs` | Generates `demo/repos` from the data at its top. Edit it and re-run `node demo/generate-repos.mjs .` to change the company, services or wording. |
-| `demo/seed.ps1` | Creates the teams and repos in a GitHub org and pushes the content. Dry run unless you add `-Apply`. |
-| `templates/new-service/` | The **Create a new service** software template (registered in `app-config.yaml`). |
+| Path                      | What it is                                                                                                                                                                                      |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `demo/repos/<name>/`      | The files pushed to each demo repo: `catalog-info.yaml`, `README.md`, and for some an `openapi.yaml` or TechDocs (`mkdocs.yml`, `docs/`). `__ORG__` is replaced with the org name when seeding. |
+| `demo/generate-repos.mjs` | Generates `demo/repos` from the data at its top. Edit it and re-run `node demo/generate-repos.mjs .` to change the company, services or wording.                                                |
+| `demo/seed.ps1`           | Creates the teams and repos in a GitHub org and pushes the content. Dry run unless you add `-Apply`.                                                                                            |
+| `templates/new-service/`  | The **Create a new service** software template (registered in `app-config.yaml`).                                                                                                               |
 
 ## Set up a demo org
 
