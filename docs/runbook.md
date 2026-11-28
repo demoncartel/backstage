@@ -146,6 +146,20 @@ try `http://[::1]:3000`.
 | Native module build fails with "path longer than allowed"                                             | Repo is in a deep folder                                                                | Move the clone to a short path and reinstall                                                                              |
 | `docker: … dockerDesktopLinuxEngine … cannot find the file`                                           | Docker Desktop isn't running or is waiting on a dialog                                  | Start Docker Desktop and finish any prompts, or use `yarn start:sqlite`                                                   |
 
+### Repo health scanner
+
+See [Repo health scanner](repo-health.md) for what it collects.
+
+| Symptom                                            | Cause                                                                                                                                 | Fix                                                                                                                     |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Repo Health page is empty                          | The first scan runs 1 minute after start (`repoHealth.schedule.initialDelay`); with SQLite results are lost on restart                | Wait a minute and reload, or press the refresh button on a component's Repo health card                                 |
+| Card says "Not scanned yet" for a new component    | It was added to the catalog after the last scheduled scan                                                                             | Press the card's refresh button, or wait for the next run (every 6 hours)                                               |
+| Card says "Scan failed: GitHub … HTTP 401/403/404" | `GITHUB_TOKEN` missing, expired, or can't read that repo                                                                              | Check the token can read the repo (`repo` scope or fine-grained Contents: Read), restart                                |
+| Card says "No GitHub repository annotation"        | The entity has no `github.com/project-slug` or `backstage.io/source-location`                                                         | Add `github.com/project-slug: <org>/<repo>` to its `catalog-info.yaml`                                                  |
+| Status shows "Unknown"                             | Microsoft's release metadata could not be fetched, or the version is not in it                                                        | Check the log for `Could not load .NET release metadata`; outbound HTTPS to `dotnetcli.blob.core.windows.net` is needed |
+| No vulnerabilities shown although you expect some  | Only exact direct versions are checked unless the repo commits `packages.lock.json`; floating versions (`1.*`) and ranges are skipped | Enable NuGet lock files (`RestorePackagesWithLockFile`) so transitive packages are checked                              |
+| Log says `Vulnerability lookup (OSV.dev) failed`   | No outbound HTTPS to `api.osv.dev`                                                                                                    | Allow it through the proxy/firewall                                                                                     |
+
 To find and stop leftover dev-server processes:
 
 ```powershell

@@ -82,4 +82,8 @@ backend.add(import('@backstage/plugin-signals-backend'));
 // mcp actions plugin
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
 
+// repo health scanner: .NET versions, support status and vulnerable NuGet
+// packages for each Component's repo, on a schedule. See docs/repo-health.md.
+backend.add(import('@internal/backstage-plugin-repo-health-backend'));
+
 backend.start();

@@ -131,6 +131,13 @@ Docs are built on demand when you open them in the UI, using the `spotify/techdo
 `docs/` + `mkdocs.yml`. For anything beyond local use, build docs in CI and publish to cloud storage
 ([guide](https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach)).
 
+## Repo health scanner
+
+The **Repo Health** page (sidebar) and the **Repo health** card on each component's overview show
+.NET versions and their support status, vulnerable NuGet packages (OSV.dev) and outdated packages,
+collected from each component's GitHub repo every 6 hours. Plain parsing and free public data only,
+no AI. See [docs/repo-health.md](docs/repo-health.md).
+
 ## Useful commands
 
 | Command                  | What it does                                                                                        |
