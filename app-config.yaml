@@ -248,11 +248,15 @@ catalog:
       rules:
         - allow: [User, Group]
 
-    # Software templates (Create → "Create a new service"). The template
+    # Software templates (Create → "Create a new service" and the .NET golden path). Each template
     # creates a repo in the org you pick and registers it in the catalog; the
     # GitHub token needs repo write access for that.
     - type: file
       target: ../../templates/new-service/template.yaml
+      rules:
+        - allow: [Template]
+    - type: file
+      target: ../../templates/dotnet-service/template.yaml
       rules:
         - allow: [Template]
 

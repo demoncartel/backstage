@@ -1,0 +1,104 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-service
+  title: Create a .NET service (golden path)
+  description: >-
+    A C# / .NET 11 minimal API in vertical slices with a functional core
+    (Result/Option, immutable records), OpenTelemetry, health checks, OpenAPI,
+    architecture tests, a chiseled Docker image, CI, TechDocs and a catalog
+    entry, in a new GitHub repository that is registered in the portal.
+  tags: [recommended, dotnet, csharp, service]
+spec:
+  owner: group:team-platform
+  type: service
+
+  parameters:
+    - title: About the service
+      required: [name, description, owner, system]
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Lowercase letters, numbers and hyphens, e.g. interest-service. Becomes InterestService in C#.
+          pattern: '^[a-z][a-z0-9-]{2,40}$'
+          ui:autofocus: true
+        description:
+          title: Description
+          type: string
+          description: One sentence on what it does.
+        owner:
+          title: Owning team
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        system:
+          title: System
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: System
+        dataClassification:
+          title: Sensitive data
+          type: string
+          description: Adds a tag so compliance can find every service that handles this data.
+          default: none
+          enum: [none, pii, pci]
+          enumNames:
+            ['None', 'Personal data (PII)', 'Card data (PCI DSS scope)']
+
+    - title: Repository
+      required: [repoUrl]
+      properties:
+        repoUrl:
+          title: Repository location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts: [github.com]
+
+  steps:
+    - id: fetch
+      name: Create files from the skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        # GitHub Actions uses ${{ }} too; copy workflows as-is so their expressions survive.
+        copyWithoutTemplating:
+          - .github/workflows/*
+        values:
+          name: ${{ parameters.name }}
+          # interest-service -> InterestService, used for namespaces and project names.
+          pascalName: ${{ parameters.name | replace('-', ' ') | title | replace(' ', '') }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          dataClassification: ${{ parameters.dataClassification }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+
+    - id: publish
+      name: Create the GitHub repository
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        description: ${{ parameters.description }}
+        defaultBranch: main
+        repoVisibility: private
+
+    - id: register
+      name: Register in the catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in the catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

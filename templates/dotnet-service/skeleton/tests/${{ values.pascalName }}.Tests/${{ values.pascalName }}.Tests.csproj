@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" />
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Third-party namespaces are global so every file's own usings sort the same whatever the service is called. -->
+    <Using Include="Xunit" />
+    <Using Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <Using Include="ArchUnitNET.Loader" />
+    <Using Include="ArchUnitNET.xUnitV3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/${{ values.pascalName }}/${{ values.pascalName }}.csproj" />
+  </ItemGroup>
+</Project>

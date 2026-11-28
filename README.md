@@ -83,7 +83,9 @@ The org import also reads members' emails: with a classic token or the GitHub CL
 Which org Backstage reads is set by `GITHUB_ORG` in `.env` (default `demoncartel`), and the portal's
 name by `APP_TITLE` and `ORG_DISPLAY_NAME`. `demo/` holds a fictional digital bank, **Acme Bank**:
 twelve repos with services, APIs, resources, systems and TechDocs, plus a script that creates them in
-any org. `templates/new-service` is a **Create a new service** template. See
+any org. `templates/new-service` is a **Create a new service** (Node.js) template, and
+`templates/dotnet-service` is a **.NET service (golden path)** template (C# in vertical slices with a
+functional core; its design is documented in the generated service's `docs/`). See
 [demo/README.md](demo/README.md) for setup and a five-minute demo script.
 
 ## How discovery works
