@@ -2,5 +2,6 @@ site_name: demoncartel Backstage
 nav:
   - Home: index.md
   - Runbook: runbook.md
+  - Repo health scanner: repo-health.md
 plugins:
   - techdocs-core

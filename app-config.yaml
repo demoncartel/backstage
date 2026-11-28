@@ -265,3 +265,19 @@ catalog:
     #   target: https://github.com/demoncartel/bad-app-sample/blob/backstage-catalog/catalog-info.yaml
     # - type: url
     #   target: https://github.com/demoncartel/bad-app-sample/blob/main/catalog-info.yaml
+
+# Repo health scanner (plugins/repo-health-backend). Reads each Component's
+# GitHub repo with the integrations.github token above, works out .NET
+# versions, support status and vulnerable NuGet packages, and stores the
+# results. No AI, no paid services. See docs/repo-health.md.
+repoHealth:
+  schedule:
+    frequency: { hours: 6 }
+    timeout: { minutes: 30 }
+    # Give GitHub discovery (initialDelay 15s) time to load the catalog first.
+    initialDelay: { minutes: 1 }
+  # Support ending within this many days shows as "EOL soon" (amber).
+  eolSoonDays: 180
+  nuget:
+    # Look up the latest stable version of each package on nuget.org.
+    checkOutdated: true
