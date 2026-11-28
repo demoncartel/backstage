@@ -133,14 +133,22 @@ Docs are built on demand when you open them in the UI, using the `spotify/techdo
 
 ## Useful commands
 
-| Command                  | What it does                                       |
-| ------------------------ | -------------------------------------------------- |
-| `yarn start`             | Run frontend + backend (Postgres)                  |
-| `yarn start:sqlite`      | Run with in-memory SQLite                          |
-| `yarn tsc`               | Type-check                                         |
-| `yarn build:backend`     | Build the backend bundle                           |
-| `yarn build-image`       | Build the backend Docker image (production config) |
-| `docker compose down -v` | Stop Postgres and delete its data                  |
+| Command                  | What it does                                                                                        |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| `yarn start`             | Run frontend + backend (Postgres)                                                                   |
+| `yarn start:sqlite`      | Run with in-memory SQLite                                                                           |
+| `yarn tsc`               | Type-check                                                                                          |
+| `yarn build:backend`     | Build the backend bundle                                                                            |
+| `yarn build-image`       | Build the backend Docker image (production config)                                                  |
+| `docker compose down -v` | Stop Postgres and delete its data                                                                   |
+| `yarn validate:catalog`  | Check every `catalog-info.yaml`, `catalog/*.yaml` and template against the catalog's entity schemas |
+| `yarn config:check`      | Check `app-config.yaml` + `app-config.production.yaml` against the config schema                    |
+
+## CI
+
+`.github/workflows/ci.yml` runs on every pull request and on pushes to `main`: catalog validation, config
+check, type check, lint, prettier, unit tests and a backend build. All checks run even if one fails, so a
+single run shows every problem. Playwright E2E tests are not run in CI yet.
 
 ## Next steps
 

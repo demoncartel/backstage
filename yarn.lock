@@ -27346,9 +27346,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
+    "@backstage/catalog-model": "npm:^1.10.3"
     "@backstage/cli": "npm:^0.36.8"
     "@backstage/cli-defaults": "npm:^0.1.8"
     "@backstage/e2e-test-utils": "npm:^0.1.2"
+    "@backstage/plugin-scaffolder-common": "npm:^2.4.0"
     "@jest/environment-jsdom-abstract": "npm:^30.5.0"
     "@playwright/test": "npm:^1.32.3"
     "@types/jest": "npm:^30.0.0"
@@ -27357,6 +27359,7 @@ __metadata:
     node-gyp: "npm:^10.0.0"
     prettier: "npm:^2.3.2"
     typescript: "npm:~5.9.0"
+    yaml: "npm:^2.9.1"
   languageName: unknown
   linkType: soft
 
@@ -30962,7 +30965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.0.0, yaml@npm:^2.2.1":
+"yaml@npm:^2.0.0, yaml@npm:^2.2.1, yaml@npm:^2.9.1":
   version: 2.9.1
   resolution: "yaml@npm:2.9.1"
   bin:
