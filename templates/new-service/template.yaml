@@ -45,7 +45,8 @@ spec:
           description: Adds a tag so compliance can find every service that handles this data.
           default: none
           enum: [none, pii, pci]
-          enumNames: ['None', 'Personal data (PII)', 'Card data (PCI DSS scope)']
+          enumNames:
+            ['None', 'Personal data (PII)', 'Card data (PCI DSS scope)']
 
     - title: Repository
       required: [repoUrl]
